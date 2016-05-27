@@ -3,33 +3,44 @@
 \usepackage[active, tightpage]{preview} % To crop the pdf to the figure
 \setlength\PreviewBorder{10pt}%
 
+
 \usepackage{tikz}
 \usetikzlibrary{arrows} % For arrow tip styles
 \usetikzlibrary{calc} % For numerical calculations on the nodes
 
 \usepackage{amsmath}
 
+% Encoding
 \usepackage[utf8]{inputenc}
 \usepackage{fontenc}
 
-\usepackage{xcolor}
-% TIKZ STYLES AND DEFINITIONS
+\usepackage{xcolor} % Colors
+
+% TIKZ STYLES AND DEFINITIONS %%%%%%%%%%%%
+
 % Axes
-\def \daxis {0.2cm}
-\def \xmax {8cm}
-\def \ymax {9cm}
-\tikzstyle{arr}=[->, >=stealth, line width=1.2pt] % Style
+\def \daxis {0.2} % combien ca depasse
+\def \xmax {8}
+\def \xmaxx {14.5}
+\def \ymax {9}
+\tikzstyle{arr}=[->, >=stealth, line width=1.2pt] % Style of the arrows
 
 % Labels
-\tikzstyle{lab}=[font=\large]
+\tikzstyle{lab}=[font=\large, inner sep=7pt]
 
-\tikzstyle{life}=[line width=2pt]
-\tikzstyle{connec}=[dashed]
-\tikzstyle{connecc}=[dashed, line width=1.5, draw=red]
-\tikzstyle{cntr}=[line width=1.5pt, draw=red]
+% Line styles
+ % Tree
+\tikzstyle{life}=[line width=2pt, draw=darkgray] % Life of an individual
+\tikzstyle{connec}=[dashed] % Connection / infection
+  % Contour
+\tikzstyle{connecc}=[dashed, line width=1.5, draw=orange] % (dis)Connection (dashed)
+\tikzstyle{cntr}=[line width=1.5pt, draw=orange] % Contour
+
+% Placeholder node
+\tikzstyle{plchd}=[inner sep=0pt]
 
 % For each individual, we set the birth (tb) and death (td) times
-% The individuals are labeled a, b, c,....
+% The individuals are labeled a, b, c,...., j
 \def \dx {0.75}
 \def \tba {0}
 \def \tda {6}
@@ -70,9 +81,12 @@
 \def \tbj {5.5}
 \def \tdj {6}
 \def \xj {10*\dx cm}
-%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+
+%% JUST THE TREE 
+\begin{figure}
 %\begin{preview} % uncomment to center pdf on this figure
 \begin{tikzpicture}
 
@@ -80,7 +94,7 @@
 \draw[arr] (-\daxis, 0)--(\xmax, 0); % Horizontal
 \draw[arr] (0, -\daxis)--(0, \ymax); % Vertical
 % Labels
-\node[lab, anchor=north east] at(0,0){ $0$};
+\node[lab, anchor= east] at(0,0){ $0$};
 \node[lab, anchor= east] at(0,\ymax){$t$};
 
 % Graduation
@@ -88,6 +102,7 @@
 %\node[circle, draw] at (0.5*\dx cm, \z){\z};
 %}
 
+% Draw the life lines
 \draw[life] (\xa, \tba)--(\xa, \tda);
 \draw[life] (\xb, \tbb)--(\xb, \tdb);
 \draw[life] (\xc, \tbc)--(\xc, \tdc);
@@ -99,6 +114,7 @@
 \draw[life] (\xi,\tbi)--(\xi, \tdi);
 \draw[life] (\xj,\tbj)--(\xj, \tdj);
 
+% Draw the connections
 \draw[connec] (\xa, \tbb)--(\xb, \tbb);
 \draw[connec] (\xb, \tbc)--(\xc, \tbc);
 \draw[connec] (\xa, \tbd)--(\xd, \tbd);
@@ -110,21 +126,28 @@
 \draw[connec] (\xi, \tbj)--(\xj, \tbj);
 \end{tikzpicture}
 %\end{preview}
+\caption{Tree, with equidistant individuals}
+\label{fig:tree1}
+\end{figure}
 
+%
+%
+%
+%
+%
+%% TREE + CONTOUR %%%%
+\begin{figure}
 %\begin{preview}
 \begin{tikzpicture}[y=1cm, x=0.5cm]
+            % Change x= to change the aspect ratio of the contour/tree
+
 % Axes
-\draw[arr] (-\daxis, 0)--(2*\xmax, 0); % Horizontal
+\draw[arr] (-\daxis, 0)--(2*\xmaxx, 0); % Horizontal
 \draw[arr] (0, -\daxis)--(0, \ymax); % Vertical
 
-\def \xa {0}
-\def \xb {\tda - \tbb}
-\def \xc {\xb + \tdb - \tdc}
-
-\tikzstyle{plchd}=[inner sep=0pt]
 
 % Define placeholder nodes: x positions of all individuals
-\node[plchd] (ma) at (\xa, 0){};
+\node[plchd] (ma) at (0, 0){};
 \node[plchd] (mb) at ($(ma) + (\tda-\tbb, 0)$){};
 \node[plchd] (mc) at ($(mb) + (\tdb-\tbc, 0)$){};
 \node[plchd] (md) at ($(mc) + (\tdc-\tbd, 0)$){};
@@ -137,6 +160,7 @@
 \node[plchd] (mend) at ($(mj) + (\tdj, 0)$){};
 
 %% DRAW TREE
+% (ma |- 52, \tba) is a node a the x coordinate of ma and the y coordinate \tba
 \draw[life] (ma |- 52, \tba)--(ma |- 52, \tda);
 \draw[life] (mb |- 52, \tbb)--(mb |- 52, \tdb);
 \draw[life] (mc |- 52, \tbc)--(mc |- 52, \tdc);
@@ -148,6 +172,7 @@
 \draw[life] (mi |- 52, \tbi)--(mi |- 52, \tdi);
 \draw[life] (mj |- 52, \tbj)--(mj |- 52, \tdj);
 
+% Draw connections (infections)
 \draw[connec] (ma |- 52, \tbb)--(mb |- 52, \tbb);
 \draw[connec] (mb |- 52, \tbc)--(mc |- 52, \tbc);
 \draw[connec] (ma |- 52, \tbd)--(md |- 52, \tbd);
@@ -159,7 +184,7 @@
 \draw[connec] (mi |- 52, \tbj)--(mj |- 52, \tbj);
 
 % Placeholder nodes: birth of an individual
-\node[plchd, draw=red] (ya) at (\xa, \tda){};
+\draw (ma |- 52, \tba)  node[plchd] (ya){};
 \draw (mb |- 52, \tbb)  node[plchd] (yb){};
 \draw (mc |- 52, \tbc)  node[plchd] (yc){};
 \draw (md |- 52, \tbd)  node[plchd] (yd){};
@@ -171,6 +196,7 @@
 \draw (mj |- 52, \tbj)  node[plchd] (yj){};
 
 % Placeholder nodes: death of an individual
+\draw (ma |- 52, \tda)  node[plchd] (za){};
 \draw (mb |- 52, \tdb)  node[plchd] (zb){};
 \draw (mc |- 52, \tdc)  node[plchd] (zc){};
 \draw (md |- 52, \tdd)  node[plchd] (zd){};
@@ -181,8 +207,11 @@
 \draw (mi |- 52, \tdi)  node[plchd] (zi){};
 \draw (mj |- 52, \tdj)  node[plchd] (zj){};
 
-\draw[connecc] (ma |- 52, 0) -- (ya);
-\draw[cntr]       (ya) -- (yb);
+% DRAW CONTOUR
+% connecc are the vertical connexions (same individual)
+% cntr the contour (change individuals)
+\draw[connecc] (ya) -- (za);
+\draw[cntr]       (za) -- (yb);
 \draw[connecc] (yb) -- (zb);
 \draw[cntr]       (zb) -- (yc);
 \draw[connecc] (yc) -- (zc);
@@ -200,9 +229,10 @@
 \draw[connecc] (yi) -- (zi);
 \draw[cntr]       (zi) -- (yj);
 \draw[connecc] (yj) -- (zj);
-\draw[cntr] (zj) -- (mend |- 52,0);
-
+\draw[cntr] (zj) -- (mend |- 52,0) node[anchor=north]{$Z$};
 
 \end{tikzpicture}
 %\end{preview}
+\caption{Contour of tree~\ref{fig:tree1}. Now the individuals are not equidistant, but the slopes of the contour are the same. $Z$ is here to show how to position a label at the end of the contour.}
+\end{figure}
 \end{document}
