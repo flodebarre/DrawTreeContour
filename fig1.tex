@@ -1,0 +1,208 @@
+\documentclass[]{article}
+
+\usepackage[active, tightpage]{preview} % To crop the pdf to the figure
+\setlength\PreviewBorder{10pt}%
+
+\usepackage{tikz}
+\usetikzlibrary{arrows} % For arrow tip styles
+\usetikzlibrary{calc} % For numerical calculations on the nodes
+
+\usepackage{amsmath}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fontenc}
+
+\usepackage{xcolor}
+% TIKZ STYLES AND DEFINITIONS
+% Axes
+\def \daxis {0.2cm}
+\def \xmax {8cm}
+\def \ymax {9cm}
+\tikzstyle{arr}=[->, >=stealth, line width=1.2pt] % Style
+
+% Labels
+\tikzstyle{lab}=[font=\large]
+
+\tikzstyle{life}=[line width=2pt]
+\tikzstyle{connec}=[dashed]
+\tikzstyle{connecc}=[dashed, line width=1.5, draw=red]
+\tikzstyle{cntr}=[line width=1.5pt, draw=red]
+
+% For each individual, we set the birth (tb) and death (td) times
+% The individuals are labeled a, b, c,....
+\def \dx {0.75}
+\def \tba {0}
+\def \tda {6}
+\def \xa {\dx cm}
+
+\def \tbb {4}
+\def \tdb {7}
+\def \xb {2*\dx cm}
+
+\def \tbc {5.5}
+\def \tdc {7.5}
+\def \xc {3*\dx cm}
+
+\def \tbd {2}
+\def \tdd {5.2}
+\def \xd {4*\dx cm}
+
+\def \tbe {4.5}
+\def \tde {6.5}
+\def \xe {5*\dx cm}
+
+\def \tbf {5.8}
+\def \tdf {6.8}
+\def \xf {6*\dx cm}
+
+\def \tbg {4.75}
+\def \tdg {7.3}
+\def \xg {7*\dx cm}
+
+\def \tbh {6.2}
+\def \tdh {8.5}
+\def \xh {8*\dx cm}
+
+\def \tbi {2.5}
+\def \tdi {7}
+\def \xi {9*\dx cm}
+
+\def \tbj {5.5}
+\def \tdj {6}
+\def \xj {10*\dx cm}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+%\begin{preview} % uncomment to center pdf on this figure
+\begin{tikzpicture}
+
+% Axes
+\draw[arr] (-\daxis, 0)--(\xmax, 0); % Horizontal
+\draw[arr] (0, -\daxis)--(0, \ymax); % Vertical
+% Labels
+\node[lab, anchor=north east] at(0,0){ $0$};
+\node[lab, anchor= east] at(0,\ymax){$t$};
+
+% Graduation
+%\foreach \z in {1, 2, ..., 8}{
+%\node[circle, draw] at (0.5*\dx cm, \z){\z};
+%}
+
+\draw[life] (\xa, \tba)--(\xa, \tda);
+\draw[life] (\xb, \tbb)--(\xb, \tdb);
+\draw[life] (\xc, \tbc)--(\xc, \tdc);
+\draw[life] (\xd, \tbd)--(\xd, \tdd);
+\draw[life] (\xe, \tbe)--(\xe, \tde);
+\draw[life] (\xf, \tbf)--(\xf, \tdf);
+\draw[life] (\xg, \tbg)--(\xg, \tdg);
+\draw[life] (\xh, \tbh)--(\xh, \tdh);
+\draw[life] (\xi,\tbi)--(\xi, \tdi);
+\draw[life] (\xj,\tbj)--(\xj, \tdj);
+
+\draw[connec] (\xa, \tbb)--(\xb, \tbb);
+\draw[connec] (\xb, \tbc)--(\xc, \tbc);
+\draw[connec] (\xa, \tbd)--(\xd, \tbd);
+\draw[connec] (\xd, \tbe)--(\xe, \tbe);
+\draw[connec] (\xe, \tbf)--(\xf, \tbf);
+\draw[connec] (\xe, \tbg)--(\xg, \tbg);
+\draw[connec] (\xg, \tbh)--(\xh, \tbh);
+\draw[connec] (\xd, \tbi)--(\xi, \tbi);
+\draw[connec] (\xi, \tbj)--(\xj, \tbj);
+\end{tikzpicture}
+%\end{preview}
+
+%\begin{preview}
+\begin{tikzpicture}[y=1cm, x=0.5cm]
+% Axes
+\draw[arr] (-\daxis, 0)--(2*\xmax, 0); % Horizontal
+\draw[arr] (0, -\daxis)--(0, \ymax); % Vertical
+
+\def \xa {0}
+\def \xb {\tda - \tbb}
+\def \xc {\xb + \tdb - \tdc}
+
+\tikzstyle{plchd}=[inner sep=0pt]
+
+% Define placeholder nodes: x positions of all individuals
+\node[plchd] (ma) at (\xa, 0){};
+\node[plchd] (mb) at ($(ma) + (\tda-\tbb, 0)$){};
+\node[plchd] (mc) at ($(mb) + (\tdb-\tbc, 0)$){};
+\node[plchd] (md) at ($(mc) + (\tdc-\tbd, 0)$){};
+\node[plchd] (me) at ($(md) + (\tdd-\tbe, 0)$){};
+\node[plchd] (mf) at ($(me) + (\tde-\tbf, 0)$){};
+\node[plchd] (mg) at ($(mf) + (\tdf-\tbg, 0)$){};
+\node[plchd] (mh) at ($(mg) + (\tdg-\tbh, 0)$){};
+\node[plchd] (mi) at ($(mh) + (\tdh-\tbi, 0)$){};
+\node[plchd] (mj) at ($(mi) + (\tdi-\tbj, 0)$){};
+\node[plchd] (mend) at ($(mj) + (\tdj, 0)$){};
+
+%% DRAW TREE
+\draw[life] (ma |- 52, \tba)--(ma |- 52, \tda);
+\draw[life] (mb |- 52, \tbb)--(mb |- 52, \tdb);
+\draw[life] (mc |- 52, \tbc)--(mc |- 52, \tdc);
+\draw[life] (md |- 52, \tbd)--(md |- 52, \tdd);
+\draw[life] (me |- 52, \tbe)--(me |- 52, \tde);
+\draw[life] (mf |- 52, \tbf)--(mf |- 52, \tdf);
+\draw[life] (mg |- 52, \tbg)--(mg |- 52, \tdg);
+\draw[life] (mh |- 52, \tbh)--(mh |- 52, \tdh);
+\draw[life] (mi |- 52, \tbi)--(mi |- 52, \tdi);
+\draw[life] (mj |- 52, \tbj)--(mj |- 52, \tdj);
+
+\draw[connec] (ma |- 52, \tbb)--(mb |- 52, \tbb);
+\draw[connec] (mb |- 52, \tbc)--(mc |- 52, \tbc);
+\draw[connec] (ma |- 52, \tbd)--(md |- 52, \tbd);
+\draw[connec] (md |- 52, \tbe)--(me |- 52, \tbe);
+\draw[connec] (me |- 52, \tbf)--(mf |- 52, \tbf);
+\draw[connec] (me |- 52, \tbg)--(mg |- 52, \tbg);
+\draw[connec] (mg |- 52, \tbh)--(mh |- 52, \tbh);
+\draw[connec] (md |- 52, \tbi)--(mi |- 52, \tbi);
+\draw[connec] (mi |- 52, \tbj)--(mj |- 52, \tbj);
+
+% Placeholder nodes: birth of an individual
+\node[plchd, draw=red] (ya) at (\xa, \tda){};
+\draw (mb |- 52, \tbb)  node[plchd] (yb){};
+\draw (mc |- 52, \tbc)  node[plchd] (yc){};
+\draw (md |- 52, \tbd)  node[plchd] (yd){};
+\draw (me |- 52, \tbe)  node[plchd] (ye){};
+\draw (mf |- 52, \tbf)  node[plchd] (yf){};
+\draw (mg |- 52, \tbg)  node[plchd] (yg){};
+\draw (mh |- 52, \tbh)  node[plchd] (yh){};
+\draw (mi |- 52, \tbi)  node[plchd] (yi){};
+\draw (mj |- 52, \tbj)  node[plchd] (yj){};
+
+% Placeholder nodes: death of an individual
+\draw (mb |- 52, \tdb)  node[plchd] (zb){};
+\draw (mc |- 52, \tdc)  node[plchd] (zc){};
+\draw (md |- 52, \tdd)  node[plchd] (zd){};
+\draw (me |- 52, \tde)  node[plchd] (ze){};
+\draw (mf |- 52, \tdf)  node[plchd] (zf){};
+\draw (mg |- 52, \tdg)  node[plchd] (zg){};
+\draw (mh |- 52, \tdh)  node[plchd] (zh){};
+\draw (mi |- 52, \tdi)  node[plchd] (zi){};
+\draw (mj |- 52, \tdj)  node[plchd] (zj){};
+
+\draw[connecc] (ma |- 52, 0) -- (ya);
+\draw[cntr]       (ya) -- (yb);
+\draw[connecc] (yb) -- (zb);
+\draw[cntr]       (zb) -- (yc);
+\draw[connecc] (yc) -- (zc);
+\draw[cntr]       (zc) -- (yd);
+\draw[connecc] (yd) -- (zd);
+\draw[cntr]       (zd) -- (ye);
+\draw[connecc] (ye) -- (ze);
+\draw[cntr]       (ze) -- (yf);
+\draw[connecc] (yf) -- (zf);
+\draw[cntr]       (zf) -- (yg);
+\draw[connecc] (yg) -- (zg);
+\draw[cntr]       (zg) -- (yh);
+\draw[connecc] (yh) -- (zh);
+\draw[cntr]       (zh) -- (yi);
+\draw[connecc] (yi) -- (zi);
+\draw[cntr]       (zi) -- (yj);
+\draw[connecc] (yj) -- (zj);
+\draw[cntr] (zj) -- (mend |- 52,0);
+
+
+\end{tikzpicture}
+%\end{preview}
+\end{document}
