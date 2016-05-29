@@ -1,7 +1,7 @@
 rm(list=ls()) # Clear the memory
 
 setwd("~/Documents/Work/Sandbox/Miraine/") # Change on your machine!
-filename <- "treedata_mix.csv"
+filename <- "treedata_mix.csv" # Name of the csv file tree data comes from
 
 # General graphical parameters
 par(las=1) # Horizontal labels
@@ -219,4 +219,31 @@ plot.tree(treedata, xcont[1:nindiv], gray(0.4))
 prt <- readline("press enter to add the contour")
 
 plot.contour(treedata, xcont)
+
+#######################################################################
+# SAVING AS PDFs
+#######################################################################
+
+wpdf <- 7
+hpdf <- 5
+pdf("tree_unsorted.pdf", width=wpdf, height=hpdf)
+  initplot()
+  plot.tree(oldtreedata, xvals)
+  title("original tree")
+dev.off()
+
+pdf("tree_beforecontour.pdf", width=wpdf, height = hpdf)
+  initplot(xmax = max(30, xcont))
+  axis(1, pos=0)
+  title("Tree and its contour")
+  plot.tree(treedata, xcont[1:nindiv], gray(0.4))
+dev.off()
+
+pdf("tree_withcontour.pdf", width=wpdf, height = hpdf)
+  initplot(xmax = max(30, xcont))
+  axis(1, pos=0)
+  title("Tree and its contour")
+  plot.tree(treedata, xcont[1:nindiv], gray(0.4))
+  plot.contour(treedata, xcont)
+dev.off()
 
