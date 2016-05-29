@@ -232,6 +232,20 @@ pdf("tree_unsorted.pdf", width=wpdf, height=hpdf)
   title("original tree")
 dev.off()
 
+pdf("tree_sortedbybirth.pdf", width=wpdf, height=hpdf)
+  initplot()
+  isortbirth <- sort(oldtreedata$tbirth, index.return = TRUE)$ix
+  plot.tree(oldtreedata[isortbirth, ], xvals)
+  title("tree sorted by birth events")
+dev.off()
+
+pdf("tree_sortedlikecontour.pdf", width=wpdf, height=hpdf)
+  initplot()
+  plot.tree(treedata, xvals)
+  title("sorted tree (for the contour)")
+dev.off()
+
+
 pdf("tree_beforecontour.pdf", width=wpdf, height = hpdf)
   initplot(xmax = max(30, xcont))
   axis(1, pos=0)
